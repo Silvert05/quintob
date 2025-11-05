@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Python application
+name: Build and push Docker image
 
 on:
   push:
@@ -9,20 +6,15 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: pip install -r requirements.txt
+    - name: 📦 Checkout repository
+      uses: actions/checkout@v4
 
     - name: 🔐 Login to GitHub Container Registry
       uses: docker/login-action@v3
@@ -36,4 +28,3 @@ jobs:
       with:
         push: true
         tags: ghcr.io/${{ github.repository }}:latest
-
